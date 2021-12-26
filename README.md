@@ -2,6 +2,8 @@
 
 First time ever using Kotlin. It turned out to be more challenging, than expected, but I guess knowing Java and JVM helps. 
 
+This is part of jetbrains "Advent of Code 2021 in Kotlin" challenge. For AoC 2021 I used python.
+
 Welcome to the Advent of Code[^aoc] Kotlin project created by [matvs][github] using the [Advent of Code Kotlin Template][template] delivered by JetBrains.
 
 In this repository, matvs is about to provide solutions for the puzzles using [Kotlin][kotlin] language.

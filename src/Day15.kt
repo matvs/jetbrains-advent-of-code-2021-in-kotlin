@@ -54,39 +54,68 @@ fun main() {
         val unvisitedSet: HashSet<Point> = hashSetOf()
         val heap: PriorityQueue<HeapNode> = PriorityQueue {n1: HeapNode, n2 : HeapNode -> n1.value.roundToInt() - n2.value.roundToInt()}
         val d: HashMap<Point, Double> = hashMapOf()
+        val prev: HashMap<Point, HeapNode?> = hashMapOf()
         for (y in 0..(graph.size - 1)) {
             // for (x in 0..(graph[y].size - 1))
-            for (x in 0..(graph[y].size - 1)) {
+            // for (x in 0..(graph[y].size - 1)) {
+            for (x in 0..(graph.size - 1)) {
                 unvisitedSet.add(graph[y][x].point)
                 d[graph[y][x].point] = POSITIVE_INFINITY
             }
         }
         d[start] = 0.0
+        prev[start] = null
         heap.add(graph[start.y][start.x])
         
         while (heap.size > 0) {
             val currentNode = heap.poll()
-      
+            // print (currentNode.point.x.toString() + "x" + currentNode.point.y.toString() + " : ")
             for (neighbour in getNeighbours(currentNode, graph)) {
+                // print (neighbour.point.x.toString() + "x" + neighbour.point.y.toString() + ", ")
                 if (unvisitedSet.contains(neighbour.point)) {
                     val currentNodeDistance = d[currentNode.point]!!
                     val length = neighbour.value!!
                     val neigbDistance = d[neighbour.point]!!
                     if (neigbDistance > currentNodeDistance + length) {
                         d[neighbour.point] = (currentNodeDistance + length)!!
+                        prev[neighbour.point] = currentNode
                         heap.add(HeapNode(neighbour.point, d[neighbour.point]!!))
                     }
 
                 }
             }
- 
+            // println()
+//  
             unvisitedSet.remove(currentNode.point)
             if (currentNode.point.equals(destination)) {
+                var l: MutableList<HeapNode> = mutableListOf()
+                l.add(currentNode)
+                var n = prev[currentNode.point]
+                while (n !=  null) {
+                    l.add(n)
+                    n = prev[n.point]
+                }
+                // println(l)
+                //   // println(graph)
+                // for (y in 0..(graph.size - 1)) {
+                //     for (x in 0..(graph.size - 1)) {
+                //         // if (l.contains(graph[y][x])) {
+                //         if (l.find { node -> node.point.x == x && node.point.y == y } != null) {
+                //             print("X")
+                //         } else {
+                //             print(graph[y][x].value.roundToInt())
+                //         }
+                    
+                //         // print(" ")
+                //     }
+                //     println()
+                // }
+
                 return d[destination]!!
             }
         }
 
-        return 4.0
+        return POSITIVE_INFINITY
     }
 
  
@@ -99,7 +128,7 @@ fun main() {
     fun part2(graph: MutableList<MutableList<HeapNode>>): Int {
         // # Somehow len(graph[226]) equals 2000
     val size = graph.size
-    for (i in 1..5) {
+    for (i in 1..4) {
         for (y in 0..(size - 1)) {
             for (x in 0..(size -1)) {
                 val nextX = x + size*i
@@ -114,7 +143,7 @@ fun main() {
     }
 
     val sizeUpper = size*5 - 1
-    for (i in 1..5) {
+    for (i in 1..4) {
         for (y in size..sizeUpper) {
             if (y >= graph.size) {
                 graph.add(mutableListOf())
@@ -124,12 +153,22 @@ fun main() {
                 var v = graph[y - size][x].value
                 v = v + 1
                 v = if (v.roundToInt() <= 9) v else 1.0
-                val node = HeapNode(Point(x, y + size * i), v)
+                val node = HeapNode(Point(x, y + size * (i - 1)), v)
                 graph.last().add(node)
             }
         }
     }
+
+    // print(graph.size)
         
+    // println(graph)
+    // for (y in 0..(graph.size - 1)) {
+    //     for (x in 0..(graph.size - 1)) {
+    //         print(graph[y][x].value.roundToInt())
+    //         // print(" ")
+    //     }
+    //     println()
+    // }
 
     return dijkstrasAlgorithm(Point(0,0), Point(graph.size - 1, graph.size - 1), graph).roundToInt()
 }
@@ -138,6 +177,10 @@ fun main() {
     val testInput = readTestInput("day15")
     var data = parseInput(testInput)
     check(part1(data) == 40)
+    check(part2(data) == 315)
+
+
+    
 
     val input = readInput("Day15")
     data = parseInput(input)

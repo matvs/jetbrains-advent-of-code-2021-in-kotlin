@@ -1,5 +1,7 @@
 # jetbrains-advent-of-code-2021-in-kotlin
 
+First time ever using Kotlin. It turned out to be more challenging, than expected, but I guess knowing Java and JVM helps. 
+
 Welcome to the Advent of Code[^aoc] Kotlin project created by [matvs][github] using the [Advent of Code Kotlin Template][template] delivered by JetBrains.
 
 In this repository, matvs is about to provide solutions for the puzzles using [Kotlin][kotlin] language.
